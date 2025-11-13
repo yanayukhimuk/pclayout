@@ -43,4 +43,37 @@ const sendForm = () => {
     })
 }
 
-sendForm()
+const sendNewForm = () => {
+    const form = document.querySelector('.modal');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Ответ сервера:', result);
+
+            alert('Форма успешно отправлена!');
+            form.reset();
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+            alert('⚠️ Произошла ошибка при отправке. Попробуйте позже.');
+        } finally {
+            console.log('Завершена обработка формы');
+        }
+    });
+};
+
+//sendForm()
+sendNewForm()
